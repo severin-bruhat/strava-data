@@ -1,0 +1,19 @@
+# I recommend you remove `IfModule`. Because if you need mod_rewrite,
+# you don't need `IfModule`. If you don't need it, you don't need this file
+# at all.
+<IfModule mod_rewrite.c>
+	RewriteEngine on
+	RewriteBase /
+	
+	#Remove trailing slash
+    	RewriteRule ^(.+)/$ $1 [L,R=301]
+	
+	# Allow requests for valid file or folder names, or some that should be
+	RewriteCond %{REQUEST_FILENAME} !-f
+	RewriteCond %{REQUEST_FILENAME} !-d
+	RewriteCond $1 ^(robots\.txt|favicon\.ico|style\.css)
+
+	# use index.php as front controller ...
+	RewriteRule ^(.*)$ index.php?/$1 [L]
+
+</IfModule>
