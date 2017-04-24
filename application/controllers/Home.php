@@ -1,8 +1,7 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Welcome extends MY_Controller {
-
+class Home extends MY_Controller {
 	/**
 	 * Index Page for this controller.
 	 *
@@ -20,8 +19,18 @@ class Welcome extends MY_Controller {
 	 */
 	public function index()
 	{
-		$this->page = "welcome_message";
+		$this->page = "form";
 		$this->layout();
-		//http://vtube.ge/en/videos/play/ZlY5Y3QzTVYxZEk
+
+		$this->form_validation->set_rules('app_key', 'Application Key', 'required');
+		if ($this->form_validation->run() === FALSE)
+    {
+        die("ko");
+    }
+    else
+    {
+        die("ok");
+    }
+
 	}
 }

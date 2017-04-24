@@ -22,8 +22,8 @@ class MY_Controller extends CI_Controller
      */
     public function layout()
     {
-        $this->template['header'] = $this->load->view('templates/header', $this->data, true);
-        $this->template['footer'] = $this->load->view('templates/footer', $this->data, true);
+        //$this->template['header'] = $this->load->view('templates/header', $this->data, true);
+        //$this->template['footer'] = $this->load->view('templates/footer', $this->data, true);
         $this->template['page'] = $this->load->view($this->page, $this->data, true);
         $this->load->view('templates/main', $this->template);
     }
