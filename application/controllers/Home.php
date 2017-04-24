@@ -8,16 +8,10 @@ class Home extends MY_Controller {
 	public function index()
 	{
 		$this->page = "form";
-		$this->layout();
 
 		$this->form_validation->set_rules('app_key', 'Application Key', 'required');
 		if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-				if ($this->form_validation->run() === FALSE)
-				{
-						//echo "Renseignez vos AppKey et recommencez";
-						 $this->load->view('erros/form/emptyField');
-				}
-				else
+				if ($this->form_validation->run() === true)
 				{
 						//get the activity
 						$appKey = trim($this->input->post('app_key', true));
@@ -56,5 +50,7 @@ class Home extends MY_Controller {
 						/*******************************************************/
 				}
 		}
+
+		$this->layout();
 	}
 }

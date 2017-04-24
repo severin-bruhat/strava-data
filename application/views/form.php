@@ -7,12 +7,12 @@
                 </div>
                 <div class="info">
                     <h4 class="text-center">Configurez votre compte Strava</h4>
-                    <p>Créé d'abord ton application sur strava et renseign ton ap key ci-dessous :</p>
-                    <?php echo validation_errors(); ?>
+                    <p>Créé d'abord votre application sur strava et renseignez votre app key ci-dessous :</p>
                     <?php echo form_open('home/index'); ?>
                         <label for="app_key">App Key</label>
                         <input type="input" name="app_key" id="app_key" />
                         <input type="submit" class="btn" name="submit" value="Récupérer mes données" />
+                        <?php echo validation_errors('<div class="alert alert-danger text-center">', '</div>'); ?>
                     <?php echo form_close(); ?>
                 </div>
             </div>
