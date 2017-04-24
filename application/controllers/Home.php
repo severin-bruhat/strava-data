@@ -1,6 +1,9 @@
 <?php
-defined('BASEPATH') OR exit('No direct script access allowed');
+defined('BASEPATH') || exit('No direct script access allowed');
 
+/**
+ * Home class
+ */
 class Home extends MY_Controller {
 	/**
 	 * Index Page for this controller.
@@ -16,38 +19,37 @@ class Home extends MY_Controller {
 						//get the activity
 						$appKey = trim($this->input->post('app_key', true));
 						$activities = stravaGetACivities($appKey);
+						if(isset($activities['error'])) {
+							 $this->data['errorMsg'] = "L'app key que vous avez saisie n'est pas reconnue, veuillez réessayer.";
+						} else {
+								//Create the headers
+								$headerToIgnore = [
+										'id',
+										'resource_state',
+										'external_id',
+										'upload_id',
+										'athlete',
+										'start_latlng',
+										'end_latlng',
+										'map',
+								];
+								$headerTab = createHeaders($headerToIgnore, $activities);
 
-						/******************Create the headers*******************/
-						$headerToIgnore = [
-								'id',
-								'resource_state',
-								'external_id',
-								'upload_id',
-								'athlete',
-								'start_latlng',
-								'end_latlng',
-								'map',
-						];
-						$headerTab = createHeaders($headerToIgnore, $activities);
-						/*******************************************************/
-
-						/*************Create the data array for CSV*************/
-						$tabData = [];
-						foreach($activities as $cpt=>$act) {
-							 $tabData[$cpt] = [];
-							 $tabItems = initBlankLine($headerTab);
-							 foreach($act as $key => $item) { //for each activity field
-										if (in_array($key, $headerTab)) {//if the field exists in the array of headers
-												$tabItems[$key] = $item; // insert the value at the right index
+								//Create the data array for CSV
+								$tabData = [];
+								foreach($activities as $cpt=>$act) {
+									 $tabData[$cpt] = [];
+									 $tabItems = initBlankLine($headerTab);
+									 foreach($act as $key => $item) { //for each activity field
+												if (in_array($key, $headerTab)) {//if the field exists in the array of headers
+														$tabItems[$key] = $item; // insert the value at the right index
+											 }
 									 }
-							 }
-							 $tabData[$cpt] = $tabItems;
+									 $tabData[$cpt] = $tabItems;
+								}
+								//export  CSV
+								exportToCsv($tabData);
 						}
-						/*******************************************************/
-
-						/******************create the CSV***********************/
-						exportToCsv($tabData);
-						/*******************************************************/
 				}
 		}
 

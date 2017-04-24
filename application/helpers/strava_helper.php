@@ -19,8 +19,10 @@ if (!function_exists('stravaConnect'))
 
           return $activities;
 
+        }catch (Pest_Unauthorized $ex) {
+            return array('error' => $ex->getMessage());
         } catch(Exception $e) {
-          print $e->getMessage();
+            print $e->getMessage();
         }
     }
 }
@@ -32,10 +34,12 @@ if (!function_exists('exportToCsv'))
         $parser = new \CsvParser\Parser();
         $parser->fieldDelimiter = ';';
         $csv = $parser->fromArray($tabData);
+        $date = date('Ymd');
+        $filename = $date."_actitivities.csv";
 
         // use the parser to convert the csv object to a string
         header('Content-Type: application/csv');
-        header('Content-Disposition: attachment; filename="test-athlete.csv";');
+        header('Content-Disposition: attachment; filename='.$filename.';');
         echo $parser->toString($csv);
         die();
     }

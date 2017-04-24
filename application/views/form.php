@@ -12,6 +12,12 @@
                         <label for="app_key">App Key</label>
                         <input type="input" name="app_key" id="app_key" />
                         <input type="submit" class="btn" name="submit" value="Récupérer mes données" />
+                        <?php if(isset($errorMsg)) {
+                            echo '<div class="alert alert-danger text-center">';
+                            echo $errorMsg;
+                            echo '</div>';
+                          }
+                        ?>
                         <?php echo validation_errors('<div class="alert alert-danger text-center">', '</div>'); ?>
                     <?php echo form_close(); ?>
                 </div>
