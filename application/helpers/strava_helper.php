@@ -15,7 +15,7 @@ if (!function_exists('stravaConnect'))
           $client = new Client($service);
 
           $activities = [];
-          $activities = $client->getAthleteActivities();
+          $activities = $client->getAthleteActivities(null, null, null, 200);
 
           return $activities;
 
