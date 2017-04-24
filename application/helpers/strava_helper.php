@@ -15,7 +15,21 @@ if (!function_exists('stravaConnect'))
           $client = new Client($service);
 
           $activities = [];
-          $activities = $client->getAthleteActivities(null, null, null, 200);
+          $exit = false;
+          $page = 1;
+          while(!$exit) {
+              $temp = $client->getAthleteActivities(null, null, $page, 200);
+              if(!empty($temp)) {
+                if($page == 1) {
+                  $activities = $temp;
+                } else {
+                  $activities = array_merge_recursive($activities, $temp);
+                }
+                $page ++;
+              } else {
+                $exit = true;
+              }
+          }
 
           return $activities;
 
