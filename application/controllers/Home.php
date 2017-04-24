@@ -4,33 +4,57 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 class Home extends MY_Controller {
 	/**
 	 * Index Page for this controller.
-	 *
-	 * Maps to the following URL
-	 * 		http://example.com/index.php/welcome
-	 *	- or -
-	 * 		http://example.com/index.php/welcome/index
-	 *	- or -
-	 * Since this controller is set as the default controller in
-	 * config/routes.php, it's displayed at http://example.com/
-	 *
-	 * So any other public methods not prefixed with an underscore will
-	 * map to /index.php/welcome/<method_name>
-	 * @see https://codeigniter.com/user_guide/general/urls.html
-	 */
+	*/
 	public function index()
 	{
 		$this->page = "form";
 		$this->layout();
 
 		$this->form_validation->set_rules('app_key', 'Application Key', 'required');
-		if ($this->form_validation->run() === FALSE)
-    {
-        die("ko");
-    }
-    else
-    {
-        die("ok");
-    }
+		if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+				if ($this->form_validation->run() === FALSE)
+				{
+						//echo "Renseignez vos AppKey et recommencez";
+						 $this->load->view('erros/form/emptyField');
+				}
+				else
+				{
+						//get the activity
+						$appKey = trim($this->input->post('app_key', true));
+						$activities = stravaGetACivities($appKey);
 
+						/******************Create the headers*******************/
+						$headerToIgnore = [
+								'id',
+								'resource_state',
+								'external_id',
+								'upload_id',
+								'athlete',
+								'start_latlng',
+								'end_latlng',
+								'map',
+						];
+						$headerTab = createHeaders($headerToIgnore, $activities);
+						/*******************************************************/
+
+						/*************Create the data array for CSV*************/
+						$tabData = [];
+						foreach($activities as $cpt=>$act) {
+							 $tabData[$cpt] = [];
+							 $tabItems = initBlankLine($headerTab);
+							 foreach($act as $key => $item) { //for each activity field
+										if (in_array($key, $headerTab)) {//if the field exists in the array of headers
+												$tabItems[$key] = $item; // insert the value at the right index
+									 }
+							 }
+							 $tabData[$cpt] = $tabItems;
+						}
+						/*******************************************************/
+
+						/******************create the CSV***********************/
+						exportToCsv($tabData);
+						/*******************************************************/
+				}
+		}
 	}
 }
