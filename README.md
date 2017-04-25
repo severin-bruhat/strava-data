@@ -9,6 +9,8 @@ This code allows you to extract data CSV from your Strava activites
 * Type it in the form and submit
 * There you are !
 
+You can try it [here](http://strava-data.h12o.fr/)
+
 # Dependencies
 
 * [StravaPHP](https://github.com/basvandorst/StravaPHP)
