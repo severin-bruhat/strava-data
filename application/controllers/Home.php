@@ -12,7 +12,7 @@ class Home extends MY_Controller {
 	{
 		$this->page = "form";
 
-		$this->form_validation->set_rules('app_key', 'Application Key', 'required');
+		$this->form_validation->set_rules("app_key", "Jeton d'accès", "required");
 		if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 				if ($this->form_validation->run() === true)
 				{
@@ -20,7 +20,7 @@ class Home extends MY_Controller {
 						$appKey = trim($this->input->post('app_key', true));
 						$activities = stravaGetACivities($appKey);
 						if(isset($activities['error'])) {
-							 $this->data['errorMsg'] = "L'app key que vous avez saisie n'est pas reconnue, veuillez réessayer.";
+							 $this->data['errorMsg'] = "Le jeton d'accès que vous avez saisie n'est pas reconnu, veuillez réessayer.";
 						} else {
 								//Create the headers
 								$headerToIgnore = [
